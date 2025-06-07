@@ -14,19 +14,23 @@ ykd1=np.divide(xk, 0.3*np.power(xk,4)+np.power(xk,2)+0.8333)
 sdef=3
 s=sdef
 xt0=xk[-1]
-xt=xt0
-yt0=-1/(1+0.6*np.power(xt,2))
-yt=yt0+1
-ykd1=np.divide(xt, 0.3*np.power(xt,4)+np.power(xt,2)+0.8333)
+yt0=-1/(1+0.6*np.power(xt0,2))
+ykd1=np.divide(xt0, 0.3*np.power(xt0,4)+np.power(xt0,2)+0.8333)
 while(np.abs(ykd1)>0.001):
-       while((yt>yt0) & (s!=0.1)):
+       if (ykd1>0):
+              xt=xt0-s
+              yt=-1/(1+0.6*np.power(xt,2))
+       else:
+              xt=xt0+s
+              yt=-1/(1+0.6*np.power(xt,2))
+       while((yt>yt0) & (s!=0.01)):
+              s=s/2
               if (ykd1>0):
                      xt=xt0-s
                      yt=-1/(1+0.6*np.power(xt,2))
               else:
                      xt=xt0+s
                      yt=-1/(1+0.6*np.power(xt,2))
-              s=s/2
        xk=np.append(xk, xt);
        yk=np.append(yk, yt);
        s=sdef
@@ -52,4 +56,4 @@ ax.grid(visible=True)
 
 plt.ion()
 plt.show()
-plt.pause(10.0)
+plt.pause(20.0)
